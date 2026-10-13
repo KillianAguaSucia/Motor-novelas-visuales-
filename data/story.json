@@ -1,0 +1,418 @@
+{
+  "start": "inicio",
+
+  "settings": {
+    "window": { "width": 1280, "height": 720, "title": "Fallout: Crónicas del Yermo (RPG Edition)" },
+    "default_text_style": {
+      "color": "#00FF66",
+      "size": 24,
+      "font": "assets/fonts/Monospace.ttf"
+    },
+    "restart_text": "Cargar simulación",
+    "music_fade_ms": 1000
+  },
+
+  "player": {
+    "max_hp": 100,
+    "current_hp": 100,
+    "inventory": [
+      { "id": "pipboy", "name": "Pip-Boy 2000", "description": "Ordenador personal de muñeca" },
+      { "id": "10mm_pistol", "name": "Pistola 10mm", "damage": 15 },
+      { "id": "stimpak", "name": "Estimulante", "heal": 30, "quantity": 2 }
+    ],
+    "stats": {
+      "strength": 6,
+      "perception": 7,
+      "endurance": 5,
+      "charisma": 6,
+      "intelligence": 7,
+      "agility": 8,
+      "luck": 5
+    }
+  },
+
+  "combat_settings": {
+    "hit_chance_formula": "(agility * 10) + luck",
+    "flee_chance_percentage": 50
+  },
+
+  "random_encounters": [
+    {
+      "id": "saqueadores_yermo",
+      "text": "¡ENCUENTRO ALEATORIO! Un grupo de Saqueadores del Yermo te embosca desde detrás de unas rocas.",
+      "background": { "fill": "#4A120B" },
+      "music": "assets/music/encounter.wav",
+      "enemy": {
+        "name": "Saqueador del Yermo",
+        "hp": 35,
+        "damage": 10,
+        "loot": [{ "id": "caps", "name": "Chapas de Nuka-Cola", "quantity": 45 }]
+      },
+      "target_victory": "continuar_camino",
+      "target_defeat": "game_over"
+    },
+    {
+      "id": "escorpion_rad",
+      "text": "¡ENCUENTRO ALEATORIO! Un Radscorpión gigante emerge de las arenas del desierto listo para atacar.",
+      "background": { "fill": "#3E2723" },
+      "music": "assets/music/encounter.wav",
+      "enemy": {
+        "name": "Radscorpión",
+        "hp": 50,
+        "damage": 15,
+        "loot": [{ "id": "rad_venom", "name": "Glándula de Veneno", "quantity": 1 }]
+      },
+      "target_victory": "continuar_camino",
+      "target_defeat": "game_over"
+    }
+  ],
+
+  "scenes": [
+    {
+      "id": "inicio",
+      "text": "AÑO 2161. Refugio 13.\n\nEl chip de agua principal ha fallado. Sin él, los quinientos habitantes morirán de sed en menos de 150 días. El Supervisor te entrega equipamiento básico antes de salir.",
+      "text_style": { "color": "#00FF66", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#0B1A2A" },
+      "music": "assets/music/vault.wav",
+      "items_given": [
+        { "id": "water_canteen", "name": "Cantimplora del Refugio 13", "quantity": 1 }
+      ],
+      "choices": [
+        { "text": "Cruzar la pesada puerta de acero hacia el Yermo", "target": "salida_refugio" }
+      ]
+    },
+
+    {
+      "id": "salida_refugio",
+      "text": "El sol radiactivo ciega tus ojos. El Pip-Boy marca tres rutas principales en el mapa. Viajar entre zonas conlleva el riesgo de sufrir emboscadas en el Yermo.",
+      "text_style": { "color": "#E59866", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#3D2817" },
+      "music": "assets/music/wasteland.wav",
+      "choices": [
+        { "text": "Viajar hacia Shady Sands", "target": "shady_sands", "is_random_encounter_trigger": true, "encounter_chance_percentage": 40 },
+        { "text": "Viajar hacia Junktown", "target": "junktown", "is_random_encounter_trigger": true, "encounter_chance_percentage": 50 },
+        { "text": "Viajar hacia El Hub", "target": "el_hub", "is_random_encounter_trigger": true, "encounter_chance_percentage": 60 }
+      ]
+    },
+
+    {
+      "id": "continuar_camino",
+      "text": "Logras sobrevivir a la amenaza del desierto y retomar la ruta marcada en tu Pip-Boy.",
+      "text_style": { "color": "#00FF66", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#2C3E50" },
+      "music": "assets/music/wasteland.wav",
+      "choices": [
+        { "text": "Reanudar la marcha", "target": "salida_refugio" }
+      ]
+    },
+
+    {
+      "id": "shady_sands",
+      "text": "Llegas a Shady Sands. Su líder, Aradesh, te pide ayuda desesperado: su hija Tandi ha sido secuestrada por los Khans.\n\nEn el centro del poblado ves una pequeña enfermería y un mercader.",
+      "text_style": { "color": "#F39C12", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#784212" },
+      "music": "assets/music/town.wav",
+      "choices": [
+        { "text": "Aceptar la misión e marchar hacia la base de los Khans", "target": "campamento_khans" },
+        { "text": "Usar un Estimulante para curarte si estás herido", "target": "usar_stimpak_shady", "items_required": ["stimpak"] },
+        { "text": "Reclutar a Ian (Mercenario)", "target": "reclutar_ian" },
+        { "text": "Ir directamente a Junktown", "target": "junktown" }
+      ]
+    },
+
+    {
+      "id": "usar_stimpak_shady",
+      "text": "Te inyectas un Estimulante. Sientes cómo tus heridas se cierran parcialmente (+30 HP).",
+      "text_style": { "color": "#2ECC71", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#1E8449" },
+      "music": "assets/music/town.wav",
+      "hp_change": 30,
+      "items_removed": [{ "id": "stimpak", "quantity": 1 }],
+      "choices": [
+        { "text": "Volver al centro de Shady Sands", "target": "shady_sands" }
+      ]
+    },
+
+    {
+      "id": "reclutar_ian",
+      "text": "Ian acepta unirse a tu viaje. Te hace entrega de algo de munición y medicinas.",
+      "text_style": { "color": "#F39C12", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#784212" },
+      "music": "assets/music/town.wav",
+      "items_given": [
+        { "id": "stimpak", "name": "Estimulante", "heal": 30, "quantity": 1 },
+        { "id": "companion_ian", "name": "Compañero: Ian", "type": "buff" }
+      ],
+      "choices": [
+        { "text": "Ir a rescatar a Tandi a la cueva de los Khans", "target": "campamento_khans" }
+      ]
+    },
+
+    {
+      "id": "campamento_khans",
+      "text": "Te infiltras en el campamento de los Khans. Su líder Garl custodia la celda de Tandi.",
+      "text_style": { "color": "#E74C3C", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#512E5F" },
+      "music": "assets/music/combat.wav",
+      "choices": [
+        { "text": "Iniciar combate cara a cara contra Garl", "target": "combate_garl" },
+        { "text": "Usar sigilo y ganzúas para abrir la celda (Requiere Ganzúas)", "target": "rescate_sigilo", "items_required": ["lockpick"] },
+        { "text": "Pagar el rescate de Tandi (Requiere 100 Chapas)", "target": "rescate_pagado", "items_required": ["caps"] }
+      ]
+    },
+
+    {
+      "id": "rescate_sigilo",
+      "text": "Aprovechando las sombras y el alboroto de los saqueadores, forzas la cerradura de la celda con tus ganzúas sin hacer ruido y escapas junto a Tandi.",
+      "text_style": { "color": "#2ECC71", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#1F618D" },
+      "music": "assets/music/stealth.wav",
+      "items_removed": [{ "id": "lockpick", "quantity": 1 }],
+      "choices": [
+        { "text": "Regresar a Shady Sands con Tandi", "target": "tandi_rescatada" }
+      ]
+    },
+
+    {
+      "id": "rescate_pagado",
+      "text": "Negocias pacíficamente con Garl y le entregas 100 chapas. Garl sonríe con codicia, cumple su palabra y ordena liberar a Tandi inmediatamente.",
+      "text_style": { "color": "#F39C12", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#784212" },
+      "music": "assets/music/town.wav",
+      "items_removed": [{ "id": "caps", "quantity": 100 }],
+      "choices": [
+        { "text": "Regresar a Shady Sands con Tandi", "target": "tandi_rescatada" }
+      ]
+    },
+
+    {
+      "id": "combate_garl",
+      "text": "¡COMBATE DE JEFE! Garl desenfunda su almadana y carga contra ti.",
+      "text_style": { "color": "#E74C3C", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#641E16" },
+      "music": "assets/music/boss_garl.wav",
+      "combat": {
+        "enemy_name": "Garl el Khan",
+        "enemy_hp": 80,
+        "enemy_damage": 18,
+        "loot": [
+          { "id": "leather_armor", "name": "Armadura de Cuero", "defense": 10 },
+          { "id": "lockpick", "name": "Ganzúas", "quantity": 1 }
+        ]
+      },
+      "choices": [
+        { "text": "Tras vencer a Garl, liberar a Tandi y volver a Shady Sands", "target": "tandi_rescatada" }
+      ]
+    },
+
+    {
+      "id": "tandi_rescatada",
+      "text": "Aradesh te agradece entre lágrimas haber devuelto a su hija a salvo. Te recompensa generosamente.",
+      "text_style": { "color": "#2ECC71", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#1E8449" },
+      "music": "assets/music/town.wav",
+      "items_given": [
+        { "id": "caps", "name": "Chapas de Nuka-Cola", "quantity": 200 },
+        { "id": "stimpak", "name": "Estimulante", "heal": 30, "quantity": 2 }
+      ],
+      "choices": [
+        { "text": "Poner rumbo hacia Junktown", "target": "junktown", "is_random_encounter_trigger": true, "encounter_chance_percentage": 30 }
+      ]
+    },
+
+    {
+      "id": "junktown",
+      "text": "Llegas a Junktown. En las calles hay una disputa entre el alguacil Killian y los matones del dueño del casino, Gizmo.",
+      "text_style": { "color": "#85C1E9", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#2C3E50" },
+      "music": "assets/music/junktown.wav",
+      "choices": [
+        { "text": "Ayudar a Killian en el tiroteo del casino", "target": "tiroteo_junktown" },
+        { "text": "Comprar armamento en la armería local", "target": "armeria_junktown" },
+        { "text": "Ignorar el conflicto e marchar a El Hub", "target": "el_hub", "is_random_encounter_trigger": true, "encounter_chance_percentage": 50 }
+      ]
+    },
+
+    {
+      "id": "armeria_junktown",
+      "text": "Visitas la tienda de Killian. Tras negociar un buen precio por tus servicios, te equipas mejor para el Yermo.",
+      "text_style": { "color": "#85C1E9", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#2C3E50" },
+      "music": "assets/music/junktown.wav",
+      "items_given": [
+        { "id": "lockpick", "name": "Ganzúas", "quantity": 1 }
+      ],
+      "choices": [
+        { "text": "Volver a la entrada de Junktown", "target": "junktown" }
+      ]
+    },
+
+    {
+      "id": "tiroteo_junktown",
+      "text": "Un sicario enviado por Gizmo intenta asesinar a Killian en medio de la tienda. ¡Entras en combate!",
+      "text_style": { "color": "#E74C3C", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#78281F" },
+      "music": "assets/music/combat.wav",
+      "combat": {
+        "enemy_name": "Sicario de Gizmo",
+        "enemy_hp": 45,
+        "enemy_damage": 12,
+        "loot": [
+          { "id": "hunting_rifle", "name": "Rifle de Caza", "damage": 28 },
+          { "id": "caps", "name": "Chapas de Nuka-Cola", "quantity": 80 }
+        ]
+      },
+      "choices": [
+        { "text": "Aceptar la gratitud de Killian e ir a El Hub", "target": "el_hub" }
+      ]
+    },
+
+    {
+      "id": "el_hub",
+      "text": "El Hub es el corazón económico del Yermo. Aquí los Mercaderes del Agua confirman que hay un Chip de Agua en las profundidades de Necropolis.",
+      "text_style": { "color": "#F4D03F", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#7D6608" },
+      "music": "assets/music/hub.wav",
+      "choices": [
+        { "text": "Viajar hacia las peligrosas ruinas de Necropolis", "target": "necropolis", "is_random_encounter_trigger": true, "encounter_chance_percentage": 70 },
+        { "text": "Buscar equipo militar en la sede de la Hermandad del Acero", "target": "hermandad" }
+      ]
+    },
+
+    {
+      "id": "necropolis",
+      "text": "Llegas a Necropolis, la Ciudad de los Muertos. Las calles están repletas de ghouls agresivos y la radiación ambiente consume tus fuerzas (-15 HP si no llevas protección).",
+      "text_style": { "color": "#27AE60", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#145A32" },
+      "music": "assets/music/necropolis.wav",
+      "hp_change": -15,
+      "choices": [
+        { "text": "Bajar a las alcantarillas a buscar la cámara del Chip de Agua", "target": "alcantarillas_necropolis" },
+        { "text": "Usar un Estimulante rápidamente", "target": "usar_stimpak_necropolis", "items_required": ["stimpak"] }
+      ]
+    },
+
+    {
+      "id": "usar_stimpak_necropolis",
+      "text": "Sanas tus quemaduras radiactivas (+30 HP).",
+      "text_style": { "color": "#2ECC71", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#145A32" },
+      "music": "assets/music/necropolis.wav",
+      "hp_change": 30,
+      "items_removed": [{ "id": "stimpak", "quantity": 1 }],
+      "choices": [
+        { "text": "Bajar a las alcantarillas", "target": "alcantarillas_necropolis" }
+      ]
+    },
+
+    {
+      "id": "alcantarillas_necropolis",
+      "text": "En la cámara sumergida encuentras el ordenador central del sistema de bombeo de agua. Tras abrir el panel de control, ¡por fin consigues el Chip de Agua!",
+      "text_style": { "color": "#00FF66", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#0E6251" },
+      "music": "assets/music/necropolis.wav",
+      "items_given": [
+        { "id": "water_chip", "name": "Chip de Agua (Refugio 13)", "quest_item": true }
+      ],
+      "choices": [
+        { "text": "Enfrentar la amenaza final del Maestro en la Catedral", "target": "catedral" },
+        { "text": "Ir a la Hermandad del Acero para conseguir la Servoarmadura", "target": "hermandad" }
+      ]
+    },
+
+    {
+      "id": "hermandad",
+      "text": "Los Paladines de la Hermandad te abren las puertas de su búnker tras demostrar tus hazañas. Te entregan equipo de combate legendario.",
+      "text_style": { "color": "#AED6F1", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#34495E" },
+      "music": "assets/music/brotherhood.wav",
+      "items_given": [
+        { "id": "power_armor", "name": "Servoarmadura T-51b", "defense": 40 },
+        { "id": "plasma_rifle", "name": "Rifle de Plasma", "damage": 50 }
+      ],
+      "choices": [
+        { "text": "Marcha final hacia la Catedral para encarar al Maestro", "target": "catedral" }
+      ]
+    },
+
+    {
+      "id": "catedral",
+      "text": "Te adentras en el sanctasanctórum de la Catedral. En las sombras se alza 'El Maestro', una masa biomecánica monstruosa que planea mutar a toda la humanidad.",
+      "text_style": { "color": "#E74C3C", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#1B1B1B" },
+      "music": "assets/music/boss_master.wav",
+      "choices": [
+        { "text": "Usar el Rifle de Plasma contra el Maestro (Requiere Rifle de Plasma)", "target": "combate_maestro", "items_required": ["plasma_rifle"] },
+        { "text": "Iniciarle un combate estándar desesperado", "target": "combate_maestro_dificil" },
+        { "text": "Usar la cantimplora para tomar un último trago e intentar hablar con él", "target": "final_diplomatico", "items_required": ["water_canteen"] }
+      ]
+    },
+
+    {
+      "id": "combate_maestro",
+      "text": "¡COMBATE FINAL! Gracias al poder destructivo del Rifle de Plasma y la protección de la Servoarmadura, abres fuego contra la masa central del Maestro.",
+      "text_style": { "color": "#E74C3C", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#4A235A" },
+      "music": "assets/music/boss_master.wav",
+      "combat": {
+        "enemy_name": "El Maestro",
+        "enemy_hp": 150,
+        "enemy_damage": 30,
+        "loot": []
+      },
+      "choices": [
+        { "text": "Escapar de la Catedral mientras se activa el protocolo de autodestrucción", "target": "final_exito" }
+      ]
+    },
+
+    {
+      "id": "combate_maestro_dificil",
+      "text": "¡COMBATE FINAL! Sin equipamiento de alta tecnología, la batalla contra los poderes psíquicos y cañones de plasma del Maestro es un verdadero infierno.",
+      "text_style": { "color": "#E74C3C", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#641E16" },
+      "music": "assets/music/boss_master.wav",
+      "hp_change": -40,
+      "combat": {
+        "enemy_name": "El Maestro",
+        "enemy_hp": 200,
+        "enemy_damage": 35,
+        "loot": []
+      },
+      "choices": [
+        { "text": "Huir hacia el Refugio 13 antes de que todo colapse", "target": "final_exito" }
+      ]
+    },
+
+    {
+      "id": "final_diplomatico",
+      "text": "Confrontas al Maestro con argumentos incontestables y datos sobre la esterilidad de los mutantes. Al comprender que su plan ha fracasado, activa la autodestrucción de la base para poner fin a su sufrimiento.",
+      "text_style": { "color": "#58D68D", "size": 24, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#117A65" },
+      "music": "assets/music/ending.wav",
+      "choices": [
+        { "text": "Regresar triunfante al Refugio 13", "target": "final_exito" }
+      ]
+    },
+
+    {
+      "id": "final_exito",
+      "text": "Has salvado a la humanidad de la amenaza mutante y traes contigo el Chip de Agua (Requiere Chip de Agua).\n\nEl Supervisor te recibe en la entrada del Refugio 13 con pesar:\n- 'Nos has salvado a todos... pero has cambiado. Ya no perteneces aquí. Lo siento.'\n\nLas puertas se cierran a tus espaldas mientras te adentras como una leyenda en el Yermo.\n\nFIN DE LA HISTORIA.",
+      "text_style": { "color": "#FFFFFF", "size": 26, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#000000" },
+      "music": "assets/music/ending.wav",
+      "items_required": ["water_chip"],
+      "choices": []
+    },
+
+    {
+      "id": "game_over",
+      "text": "Tus puntos de vida han llegado a cero o tus decisiones te han llevado a un callejón sin salida en el desértico Yermo.\n\nFIN DEL JUEGO",
+      "text_style": { "color": "#E74C3C", "size": 30, "font": "assets/fonts/Monospace.ttf" },
+      "background": { "fill": "#300000" },
+      "music": "assets/music/gameover.wav",
+      "choices": [
+        { "text": "Reiniciar la simulación", "target": "inicio" }
+      ]
+    }
+  ]
+}

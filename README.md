@@ -1,2 +1,3 @@
 # Motor-novelas-visuales-
 Por mera diversion, este sera, es o fue un intento de crear un motor para diseñar y crear novelas visuales sencillas, para aligerar tareas y debugear se ha usado IA (al ser un proyecto tonto usaremos esa herramienta)
+¿Como funciona? se ha de editar el archivo story.json para ir creando el arbol y sus ramificaciones, se incluye una historia de ejemplo para entender como funciona la estructura, una vez creada tu vn solo tienes que ejecutar el archivo main.py y esta deberia iniciarse, si una o varias escenas del json no estan bien conectadas marcara un error en la terminal (o deberia hacerlo)

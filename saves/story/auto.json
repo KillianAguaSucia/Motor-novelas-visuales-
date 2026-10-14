@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "scene_id": "amanecer_nado",
+  "line_index": 0,
+  "variables": {
+    "valor": 1,
+    "tiene_mapa": false,
+    "aviso_zorro": true
+  },
+  "saved_at": "2026-10-14T09:52:21.360+02:00"
+}
